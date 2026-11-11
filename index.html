@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>やること</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%232b4c7e'/%3E%3Cpath d='M9.5 16.5l4.5 4.5 8.5-9.5' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="app">
+      <header class="header">
+        <div class="header-top">
+          <h1>やること</h1>
+          <p class="today" id="today"></p>
+        </div>
+        <div class="progress">
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-bar" id="progress-bar"></div>
+          </div>
+          <p class="progress-text" id="progress-text"></p>
+        </div>
+      </header>
+
+      <form class="add-form" id="add-form">
+        <input
+          class="field add-title"
+          id="add-title"
+          type="text"
+          maxlength="200"
+          placeholder="新しいタスクを入力"
+          aria-label="新しいタスク"
+          autocomplete="off"
+          required
+          pattern=".*\S.*"
+          title="空白以外の文字を入力してください"
+          autofocus
+        />
+        <input
+          class="field add-due"
+          id="add-due"
+          type="date"
+          max="9999-12-31"
+          aria-label="期限（任意）"
+        />
+        <button class="button button-primary" type="submit">追加</button>
+      </form>
+
+      <div class="filters" id="filters" role="group" aria-label="表示するタスク">
+        <button class="filter" type="button" data-filter="all" aria-pressed="true">
+          すべて<span class="filter-count" data-count="all"></span>
+        </button>
+        <button class="filter" type="button" data-filter="active" aria-pressed="false">
+          未完了<span class="filter-count" data-count="active"></span>
+        </button>
+        <button class="filter" type="button" data-filter="done" aria-pressed="false">
+          完了<span class="filter-count" data-count="done"></span>
+        </button>
+      </div>
+
+      <ul class="list" id="list"></ul>
+      <p class="empty" id="empty" hidden></p>
+
+      <footer class="footer">
+        <p id="remaining"></p>
+        <button class="text-button" id="clear-done" type="button" hidden>完了したタスクを削除</button>
+      </footer>
+    </main>
+
+    <div class="toast-region" id="toast" role="status">
+      <div class="toast" id="toast-card" hidden>
+        <span id="toast-message"></span>
+        <button class="toast-undo" id="toast-undo" type="button" hidden>元に戻す</button>
+      </div>
+    </div>
+
+    <template id="task-template">
+      <li class="task">
+        <div class="task-view">
+          <label class="task-check">
+            <input type="checkbox" />
+            <span class="task-box" aria-hidden="true"></span>
+          </label>
+          <div class="task-body">
+            <span class="task-title"></span>
+            <span class="task-due" hidden></span>
+          </div>
+          <div class="task-actions">
+            <button class="icon-button" type="button" data-action="edit" title="編集">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17v3z" />
+                <path d="M14 8l3 3" />
+              </svg>
+            </button>
+            <button class="icon-button" type="button" data-action="delete" title="削除">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 7h16" />
+                <path d="M9 7V4h6v3" />
+                <path d="M6 7l1 13h10l1-13" />
+                <path d="M10 11v5M14 11v5" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <form class="task-edit" hidden>
+          <input
+            class="field task-edit-title"
+            type="text"
+            maxlength="200"
+            aria-label="タスク名"
+            autocomplete="off"
+            required
+            pattern=".*\S.*"
+            title="空白以外の文字を入力してください"
+          />
+          <input class="field task-edit-due" type="date" max="9999-12-31" aria-label="期限（任意）" />
+          <div class="task-edit-actions">
+            <button class="button button-primary" type="submit">保存</button>
+            <button class="button" type="button" data-action="cancel">キャンセル</button>
+          </div>
+        </form>
+      </li>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,518 @@
+:root {
+  color-scheme: light dark;
+
+  --bg: #f6f4ef;
+  --surface: #fffefb;
+  --ink: #23211c;
+  --muted: #68645a;
+  --line: #e0dbd0;
+  --accent: #2b4c7e;
+  --on-accent: #ffffff;
+  --danger: #b03520;
+  --hover: rgba(35, 33, 28, 0.06);
+  --toast-bg: #2a2925;
+  --toast-ink: #f6f4ef;
+  --toast-accent: #a9c4ee;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17181b;
+    --surface: #212226;
+    --ink: #ecebe6;
+    --muted: #a5a39a;
+    --line: #36373c;
+    --accent: #8fb0e3;
+    --on-accent: #14171c;
+    --danger: #f08f76;
+    --hover: rgba(236, 235, 230, 0.08);
+    --toast-bg: #ecebe6;
+    --toast-ink: #23211c;
+    --toast-accent: #2b4c7e;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", "Meiryo",
+    system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  font-feature-settings: "palt";
+}
+
+p,
+h1,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.app {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 56px 16px 112px;
+}
+
+/* ヘッダー */
+
+.header-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+}
+
+.today {
+  color: var(--muted);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.progress-track {
+  flex: 1;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+.progress-text {
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 入力欄とボタン */
+
+.field {
+  min-width: 0;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.field:focus-visible {
+  border-color: var(--accent);
+  outline-offset: 0;
+}
+
+.button {
+  height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: transparent;
+  white-space: nowrap;
+}
+
+.button:hover {
+  background: var(--hover);
+}
+
+.button-primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+}
+
+.button-primary:hover {
+  background: var(--accent);
+  filter: brightness(1.1);
+}
+
+.add-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.add-title {
+  flex: 1 1 240px;
+}
+
+.add-due {
+  flex: 0 1 160px;
+  color: var(--muted);
+}
+
+/* 絞り込み */
+
+.filters {
+  display: flex;
+  gap: 4px;
+  margin-top: 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.filter {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.filter:hover {
+  color: var(--ink);
+}
+
+.filter[aria-pressed="true"] {
+  border-bottom-color: var(--accent);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.filter-count {
+  margin-left: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+/* タスク */
+
+.list {
+  list-style: none;
+}
+
+.task {
+  border-bottom: 1px solid var(--line);
+  animation: task-in 0.18s ease-out;
+}
+
+@keyframes task-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.task-view {
+  display: flex;
+  align-items: flex-start;
+}
+
+.task-check {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 52px;
+  margin-left: -11px;
+  cursor: pointer;
+}
+
+.task-check input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.task-box {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--muted);
+  border-radius: 50%;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.task-check:hover .task-box {
+  border-color: var(--accent);
+}
+
+.task-box::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 6.5px;
+  width: 6px;
+  height: 11px;
+  border: solid var(--on-accent);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.15s ease;
+}
+
+.task-check input:checked + .task-box {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.task-check input:checked + .task-box::after {
+  transform: rotate(45deg) scale(1);
+}
+
+.task-check input:focus-visible + .task-box {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.task-body {
+  flex: 1;
+  min-width: 0;
+  padding: 13px 8px 13px 0;
+}
+
+.task-title {
+  display: block;
+  overflow-wrap: anywhere;
+  transition: color 0.15s ease;
+}
+
+.task.is-done .task-title {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.task-due {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.task-due[data-tone="today"] {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.task-due[data-tone="overdue"] {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.task-actions {
+  display: flex;
+  flex: none;
+  height: 52px;
+  align-items: center;
+  margin-right: -8px;
+}
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 44px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+}
+
+.icon-button:hover {
+  background: var(--hover);
+  color: var(--ink);
+}
+
+.icon-button[data-action="delete"]:hover {
+  color: var(--danger);
+}
+
+.icon-button svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.task-edit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 0;
+}
+
+.task-edit-title {
+  flex: 1 1 100%;
+}
+
+.task-edit-due {
+  flex: 0 1 160px;
+}
+
+.task-edit-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.empty {
+  padding: 48px 0;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* フッター */
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 44px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.text-button {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.text-button:hover {
+  color: var(--danger);
+}
+
+/* トースト */
+
+.toast-region {
+  position: fixed;
+  right: 16px;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  left: 16px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 100%;
+  min-height: 48px;
+  padding: 4px 8px 4px 18px;
+  border-radius: 8px;
+  background: var(--toast-bg);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  color: var(--toast-ink);
+  font-size: 14px;
+  pointer-events: auto;
+  animation: task-in 0.18s ease-out;
+}
+
+.toast:not(:has(.toast-undo:not([hidden]))) {
+  padding-right: 18px;
+}
+
+.toast-undo {
+  flex: none;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--toast-accent);
+  font-weight: 600;
+}
+
+.toast-undo:focus-visible {
+  outline-color: var(--toast-accent);
+  outline-offset: -2px;
+}
+
+@media (max-width: 540px) {
+  .app {
+    padding-top: 32px;
+  }
+
+  .add-title {
+    flex: 1 1 100%;
+  }
+
+  .add-due {
+    flex: 1 1 0;
+  }
+
+  .task-edit-due {
+    flex: 1 1 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
